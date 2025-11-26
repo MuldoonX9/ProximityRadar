@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "ProximityModule.h"
 #include "ProximityRadarPlayerController.generated.h"
 
 class UInputMappingContext;
@@ -59,6 +60,9 @@ protected:
 
 	/** Pointer to the UI widget */
 	TObjectPtr<UProximityRadarUI> VehicleUI;
+
+private:
+	ProximityModule m_ProximityModule;
 		
 protected:
 

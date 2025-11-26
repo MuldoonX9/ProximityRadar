@@ -2,6 +2,7 @@
 
 
 #include "ProximityRadarPlayerController.h"
+#include "CarActor.h"
 #include "ProximityRadarPawn.h"
 #include "ProximityRadarUI.h"
 #include "EnhancedInputSubsystems.h"
@@ -43,6 +44,7 @@ void AProximityRadarPlayerController::BeginPlay()
 		if (VehicleUI)
 		{
 			VehicleUI->AddToViewport();
+			m_ProximityModule.SetUI(VehicleUI);
 
 		} else {
 
@@ -86,7 +88,11 @@ void AProximityRadarPlayerController::Tick(float Delta)
 	if (IsValid(VehiclePawn) && IsValid(VehicleUI))
 	{
 		VehicleUI->UpdateSpeed(VehiclePawn->GetChaosVehicleMovement()->GetForwardSpeed());
-		VehicleUI->UpdateGear(VehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
+		//VehicleUI->UpdateGear(VehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
+		m_ProximityModule.OnUpdate(Delta);
+		TArray<AActor*> carsToFind;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACarActor::StaticClass(), carsToFind);
+		VehicleUI->UpdateGear(carsToFind.Num());
 	}
 }
 
@@ -96,6 +102,7 @@ void AProximityRadarPlayerController::OnPossess(APawn* InPawn)
 
 	// get a pointer to the controlled pawn
 	VehiclePawn = CastChecked<AProximityRadarPawn>(InPawn);
+	m_ProximityModule.SetPlayer(VehiclePawn);
 
 	// subscribe to the pawn's OnDestroyed delegate
 	VehiclePawn->OnDestroyed.AddDynamic(this, &AProximityRadarPlayerController::OnPawnDestroyed);
