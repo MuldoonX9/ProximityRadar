@@ -5,7 +5,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "ProximityRadarPawn.h"
 #include "ProximityRadarUI.h"
-#include "RadarTypes.h"
 #include <cmath>
 
 #ifndef M_PI
@@ -30,7 +29,6 @@ void ProximityModule::SetUI(TObjectPtr<UProximityRadarUI> vehicleUI)
 
 void ProximityModule::OnUpdate(float Delta)
 {
-	//VehicleUI->UpdateGear(VehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
 	TArray<AActor*> carsToFind;
 	
 	UGameplayStatics::GetAllActorsOfClass(m_VehiclePawn->GetWorld(), ACarActor::StaticClass(), carsToFind);
@@ -42,10 +40,6 @@ void ProximityModule::OnUpdate(float Delta)
 		{
 			return FVector::DistSquared(playerLoc, LHS->GetActorLocation()) < FVector::DistSquared(playerLoc, RHS->GetActorLocation());
 		});
-	/*carsToFind.Sort([playerLoc](AActor* a, AActor* b) {
-		return FVector::DistSquared(playerLoc, a->GetActorLocation()) < FVector::DistSquared(playerLoc, b->GetActorLocation());
-		});*/
-
 
 	FVector playerForwardVector = m_VehiclePawn->GetActorForwardVector();
 	float angleRotation = std::atan2(playerForwardVector.Y, playerForwardVector.X);
@@ -59,36 +53,75 @@ void ProximityModule::OnUpdate(float Delta)
 	for (AActor* carActor : carsToFind)
 	{
 		FVector playerToCarVec = carActor->GetActorLocation() - playerLoc;
-		//FVector playerToCarVec = playerLoc - carActor->GetActorLocation();
 		if (GEngine && i == 0)
 		{
 			float dist = FVector::Dist(playerLoc, carActor->GetActorLocation());
 			//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f"), dist)); 
-			if (dist < 100)
-			{
-				m_VehicleUI->UpdateRadarBlindspots(EBlindspotLevel::VeryClose, true);
-			}
-			else if (dist < 200)
-			{
-				m_VehicleUI->UpdateRadarBlindspots(EBlindspotLevel::Close, true);
-			}
-			else
-			{
-				m_VehicleUI->UpdateRadarBlindspots(EBlindspotLevel::AllClear, true);
-			}
+			
 		}
 		FVector2D newVec{ 0,0 };
-		//newVec.Y = (std::cos(angleRotation)* playerToCarVec.X) - (std::sin(angleRotation) * playerToCarVec.Y);
-		//newVec.X = (std::sin(angleRotation) * playerToCarVec.X) + (std::cos(angleRotation) * playerToCarVec.Y);
 		newVec.X = (std::cos(angleRotation) * playerToCarVec.Y) - (std::sin(angleRotation) * playerToCarVec.X);
 		newVec.Y = (std::sin(angleRotation) * playerToCarVec.Y) + (std::cos(angleRotation) * playerToCarVec.X);
-		//newVec.X = playerToCarVec.Y;
-		//newVec.Y = playerToCarVec.X / 5.f;
-		newVec.Y = newVec.Y * -1.f;// / -5.f;
+		newVec.Y = newVec.Y * -1.f;
 		carPositions.Add(newVec);
 		i++;
 	}
+	CheckBlindspots(carPositions);
 	m_VehicleUI->UpdateHudRadar(carPositions);
 }
 
+void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
+{
+	m_Right = EBlindspotLevel::AllClear;
+	m_Left = EBlindspotLevel::AllClear;
+
+	EBlindspotLevel newLevel = EBlindspotLevel::AllClear;
+	for (FVector2D carPosition : carPositions)
+	{
+		
+		if (abs(carPosition.X) < RadarConstants::VeryCloseXDistance
+			&& abs(carPosition.Y) < RadarConstants::VeryCloseYDistance)
+		{
+			newLevel = EBlindspotLevel::VeryClose;
+		}
+		else if (abs(carPosition.X) < RadarConstants::CloseXDistance
+			&& abs(carPosition.Y) < RadarConstants::CloseYDistance)
+		{
+			newLevel = EBlindspotLevel::Close, true;
+		}
+		else if (carPosition.Y > RadarConstants::CloseYDistance
+			&& carPosition.Y < RadarConstants::CloseYDistanceBelow)
+		{
+			newLevel = EBlindspotLevel::Close, true;
+		}
+		else
+		{
+			newLevel = EBlindspotLevel::AllClear, true;
+		}
+
+		if (carPosition.X > 0 && newLevel > m_Right)
+		{
+			m_Right = newLevel;
+		}
+		else if (carPosition.X < 0 && newLevel > m_Left)
+		{
+			m_Left = newLevel;
+		}
+		newLevel = EBlindspotLevel::AllClear;
+	}
+
+
+
+	// This saves on UI performance
+	if (m_PreviousRight != m_Right)
+	{
+		m_VehicleUI->UpdateRadarBlindspots(m_Right, false);
+		m_PreviousRight = m_Right;
+	}
+	if (m_PreviousLeft != m_Left)
+	{
+		m_VehicleUI->UpdateRadarBlindspots(m_Left, true);
+		m_PreviousLeft = m_Left;
+	}
+}
 
