@@ -85,6 +85,21 @@ void AProximityRadarPlayerController::Tick(float Delta)
 {
 	Super::Tick(Delta);
 
+	if (UGameplayStatics::IsGamePaused(GetWorld()))
+	{
+		if(VehicleUI->GetVisibility() != ESlateVisibility::Hidden)
+		{
+			VehicleUI->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+	else
+	{
+		if (VehicleUI->GetVisibility() != ESlateVisibility::Visible)
+		{
+			VehicleUI->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
+
 	if (IsValid(VehiclePawn) && IsValid(VehicleUI))
 	{
 		VehicleUI->UpdateSpeed(VehiclePawn->GetChaosVehicleMovement()->GetForwardSpeed());
