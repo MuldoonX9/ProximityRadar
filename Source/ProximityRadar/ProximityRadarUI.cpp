@@ -24,7 +24,7 @@ void UProximityRadarUI::UpdateHudRadar(const TArray<FVector2D>& carPositions)
 	{
 		if (GEngine)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f, %f"), carPositions[i].X, carPositions[i].Y));
+			//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f, %f"), carPositions[i].X, carPositions[i].Y));
 		}
 		FVector2D newSize{ carPositions[i].X, carPositions[i].Y };
 		OnPipUpdate(carPositions[i]);
