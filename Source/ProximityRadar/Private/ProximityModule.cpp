@@ -29,6 +29,10 @@ void ProximityModule::SetUI(TObjectPtr<UProximityRadarUI> vehicleUI)
 
 void ProximityModule::OnUpdate(float Delta)
 {
+	if (UGameplayStatics::IsGamePaused(m_VehiclePawn->GetWorld()))
+	{
+		return;
+	}
 	TArray<AActor*> carsToFind;
 	
 	UGameplayStatics::GetAllActorsOfClass(m_VehiclePawn->GetWorld(), ACarActor::StaticClass(), carsToFind);
