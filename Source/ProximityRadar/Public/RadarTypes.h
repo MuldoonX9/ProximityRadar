@@ -16,7 +16,8 @@ enum class EBlindspotLevel : uint8
 
 namespace RadarConstants 
 {
-	const int MaxDistance = 500;
+	const int MaxUiIcons = 3;
+	constexpr int MaxDistanceSquare = 500 * 500;
 	const int CloseDistance = 300;
 	const int VeryCloseDistance = 200;
 

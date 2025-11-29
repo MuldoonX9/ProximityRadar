@@ -56,9 +56,12 @@ void ProximityModule::OnUpdate(float Delta)
 		//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f"), degRotation));
 	}
 	TArray<FVector2D> carPositions;
-	int i = 0;
 	for (AActor* carActor : carsToFind)
 	{
+		if (FVector::DistSquared(playerLoc, carActor->GetActorLocation()) > RadarConstants::MaxDistanceSquare)
+		{
+			break;
+		}
 		FVector playerToCarVec = carActor->GetActorLocation() - playerLoc;
 		FVector2D newVec{ 0,0 };
 		newVec.X = (std::cos(angleRotation) * playerToCarVec.Y) - (std::sin(angleRotation) * playerToCarVec.X);
@@ -66,7 +69,6 @@ void ProximityModule::OnUpdate(float Delta)
 		// In front in world space is opposite from top in UI space
 		newVec.Y = newVec.Y * -1.f;
 		carPositions.Add(newVec);
-		i++;
 	}
 	CheckBlindspots(carPositions);
 	m_VehicleUI->UpdateHudRadar(carPositions);

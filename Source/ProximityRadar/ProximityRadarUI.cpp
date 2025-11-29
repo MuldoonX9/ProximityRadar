@@ -20,14 +20,18 @@ void UProximityRadarUI::UpdateGear(int32 NewGear)
 
 void UProximityRadarUI::UpdateHudRadar(const TArray<FVector2D>& carPositions)
 {
-	for (int i = 0; i < carPositions.Num(); i++)
+	for (int i = 0; i < RadarConstants::MaxUiIcons; i++)
 	{
-		FVector2D newSize{ carPositions[i].X, carPositions[i].Y };
-		OnPipUpdate(carPositions[i]);
-
-		if (i == 0)
+		if (i >= carPositions.Num())
 		{
-			break;
+			SetPipVisible(i, false);
+			continue;
+		}
+		else 
+		{
+			FVector2D newSize{ carPositions[i].X, carPositions[i].Y };
+			SetPipVisible(i, true);
+			OnPipUpdate(i, carPositions[i]);
 		}
 	}
 }

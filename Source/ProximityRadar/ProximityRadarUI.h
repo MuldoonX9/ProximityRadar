@@ -47,7 +47,7 @@ protected:
 	void OnGearUpdate(int32 NewGear);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
-	void OnPipUpdate(FVector2D vec);
+	void OnPipUpdate(int pipId, FVector2D carLocation2D);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
 	void OnPipLocationUpdate(const TArray<FVector2D>& carPositions);
