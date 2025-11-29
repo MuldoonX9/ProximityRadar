@@ -1,6 +1,8 @@
 #pragma once
 #include "CoreMinimal.h"
 
+// AlexHoffman addition
+
 UENUM(BlueprintType)
 enum class EBlindspotLevel : uint8
 {
@@ -16,15 +18,21 @@ enum class EBlindspotLevel : uint8
 
 namespace RadarConstants 
 {
+	// For performance reasons, let's only draw 3 icons
 	const int MaxUiIcons = 3;
-	constexpr int MaxDistanceSquare = 500 * 500;
-	const int CloseDistance = 300;
-	const int VeryCloseDistance = 200;
 
+	// The max distance from the player to process cars for the radar
+	constexpr int MaxDistanceSquare = 900 * 900;
+
+	
+	// The distance from the player to draw a red blindspot
 	const int VeryCloseXDistance = 400;
-	const int CloseXDistance = 700;
 	const int VeryCloseYDistance = 260;
+
+	// The distance from the player to draw a yellow blindspot
+	const int CloseXDistance = 700;	
 	const int CloseYDistance = 300;
+	// An extra buffer to draw opponent cars that are farther behind the player
 	const int CloseYDistanceBelow = 400;
 }
 

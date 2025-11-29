@@ -1,3 +1,5 @@
+// AlexHoffman addition
+
 #include "ProximityModule.h"
 
 #include "CarActor.h"
@@ -33,18 +35,19 @@ void ProximityModule::OnUpdate(float Delta)
 	{
 		return;
 	}
-	TArray<AActor*> carsToFind;
-	
+
+	// First, get all the opponent cars
+	TArray<AActor*> carsToFind;	
 	UGameplayStatics::GetAllActorsOfClass(m_VehiclePawn->GetWorld(), ACarActor::StaticClass(), carsToFind);
 
-	FVector playerLoc = m_VehiclePawn->GetActorLocation();
-
 	// Sort the cars by distance to the player, so closest cars are first
+	FVector playerLoc = m_VehiclePawn->GetActorLocation();
 	Algo::Sort(carsToFind, [playerLoc](const AActor* LHS, const AActor* RHS)
 		{
 			return FVector::DistSquared(playerLoc, LHS->GetActorLocation()) < FVector::DistSquared(playerLoc, RHS->GetActorLocation());
 		});
 
+	// Get the rotation of the player car, so we can rotate the opponent cars about it.
 	FVector playerForwardVector = m_VehiclePawn->GetActorForwardVector();
 	// this is in radians
 	float angleRotation = std::atan2(playerForwardVector.Y, playerForwardVector.X);
@@ -58,19 +61,27 @@ void ProximityModule::OnUpdate(float Delta)
 	TArray<FVector2D> carPositions;
 	for (AActor* carActor : carsToFind)
 	{
+		// Stop processing if all the cars are too far away
 		if (FVector::DistSquared(playerLoc, carActor->GetActorLocation()) > RadarConstants::MaxDistanceSquare)
 		{
 			break;
 		}
+
+		// Get a vector from the player to the opponent car
 		FVector playerToCarVec = carActor->GetActorLocation() - playerLoc;
 		FVector2D newVec{ 0,0 };
+		// Using the rotation from above, rotate the vector about the angle
+		// This will convert the opponent cars from world space to the player's local space
 		newVec.X = (std::cos(angleRotation) * playerToCarVec.Y) - (std::sin(angleRotation) * playerToCarVec.X);
 		newVec.Y = (std::sin(angleRotation) * playerToCarVec.Y) + (std::cos(angleRotation) * playerToCarVec.X);
 		// In front in world space is opposite from top in UI space
 		newVec.Y = newVec.Y * -1.f;
 		carPositions.Add(newVec);
 	}
+
+	// Check to see if any of the cars should trigger the yellow or red blindspot icons.
 	CheckBlindspots(carPositions);
+	// Finally, pass along the 2D locations of the relevant opponent cars to the UI
 	m_VehicleUI->UpdateHudRadar(carPositions);
 }
 

@@ -18,8 +18,12 @@ void UProximityRadarUI::UpdateGear(int32 NewGear)
 	OnGearUpdate(NewGear);
 }
 
+// AlexHoffman addition
 void UProximityRadarUI::UpdateHudRadar(const TArray<FVector2D>& carPositions)
 {
+	// Loop over the number of icons we have
+	// If we have more icons than cars, make the remaining icons invisible
+	// If we have more cars than icons, don't draw them, the list is sorted by the cars closest to to the player
 	for (int i = 0; i < RadarConstants::MaxUiIcons; i++)
 	{
 		if (i >= carPositions.Num())
@@ -36,6 +40,7 @@ void UProximityRadarUI::UpdateHudRadar(const TArray<FVector2D>& carPositions)
 	}
 }
 
+// AlexHoffman addition
 void UProximityRadarUI::UpdateRadarBlindspots(EBlindspotLevel typ, bool left)
 {
 	SetBlindspotArc(typ, left);

@@ -1,3 +1,10 @@
+// AlexHoffman addition
+// The Proximity Module is the brains that drive the UI Radar (or minimap) 
+// so the player can see the cars nearby and in their blindspots.
+// The proximity module takes in a list of cars,
+// outputs to the UI a list of the closest cars to the player
+// converted from world space to the players local space.
+// It also calculates if the car should trigger a yellow or red blindspot arc
 #pragma once
 
 #include "RadarTypes.h"
