@@ -50,6 +50,9 @@ protected:
 	void OnPipUpdate(FVector2D vec);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
+	void OnPipLocationUpdate(const TArray<FVector2D>& carPositions);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
 	void SetPipVisible(int pipId, bool visible);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")

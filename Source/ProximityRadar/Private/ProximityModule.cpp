@@ -74,15 +74,18 @@ void ProximityModule::OnUpdate(float Delta)
 	m_VehicleUI->UpdateHudRadar(carPositions);
 }
 
+// This function will take the calculated car positions and show the red or yellow blinspot arcs
+// It will also update the UI with the new information
 void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
 {
+	// Favor All clear in the default case
 	m_Right = EBlindspotLevel::AllClear;
 	m_Left = EBlindspotLevel::AllClear;
 
 	EBlindspotLevel newLevel = EBlindspotLevel::AllClear;
 	for (FVector2D carPosition : carPositions)
 	{
-		
+		// Check for the closest case fist
 		if (abs(carPosition.X) < RadarConstants::VeryCloseXDistance
 			&& abs(carPosition.Y) < RadarConstants::VeryCloseYDistance)
 		{
@@ -91,18 +94,23 @@ void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
 		else if (abs(carPosition.X) < RadarConstants::CloseXDistance
 			&& abs(carPosition.Y) < RadarConstants::CloseYDistance)
 		{
-			newLevel = EBlindspotLevel::Close, true;
+			newLevel = EBlindspotLevel::Close;
 		}
-		else if (carPosition.Y > RadarConstants::CloseYDistance
+		// This has blindspots show up for cars further to the rear than 
+		// they would be if they were in front of the driver.
+		// Since they wouldn't be as visible to the driver.
+		else if (abs(carPosition.X) < RadarConstants::CloseXDistance
+			&& carPosition.Y > RadarConstants::CloseYDistance
 			&& carPosition.Y < RadarConstants::CloseYDistanceBelow)
 		{
-			newLevel = EBlindspotLevel::Close, true;
+			newLevel = EBlindspotLevel::Close;
 		}
 		else
 		{
-			newLevel = EBlindspotLevel::AllClear, true;
+			newLevel = EBlindspotLevel::AllClear;
 		}
 
+		// Favor the highest level of blindspot (very close)
 		if (carPosition.X > 0 && newLevel > m_Right)
 		{
 			m_Right = newLevel;
@@ -116,11 +124,13 @@ void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
 
 
 
+	// Only update the blindspots if they have changed since the last update
 	// This saves on UI performance
 	if (m_PreviousRight != m_Right)
 	{
 		m_VehicleUI->UpdateRadarBlindspots(m_Right, false);
 		m_PreviousRight = m_Right;
+		// TODO: (beyond current scope) Send audio event to play spotter audio
 	}
 	if (m_PreviousLeft != m_Left)
 	{
