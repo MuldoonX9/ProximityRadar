@@ -46,10 +46,13 @@ void ProximityModule::OnUpdate(float Delta)
 		});
 
 	FVector playerForwardVector = m_VehiclePawn->GetActorForwardVector();
+	// this is in radians
 	float angleRotation = std::atan2(playerForwardVector.Y, playerForwardVector.X);
-	float degRotation = (180.0f / M_PI) * angleRotation;
+	
 	if (GEngine)
 	{
+		// For Debug Purposes: show the angle of the opponent car in degrees
+		//float degRotation = (180.0f / M_PI) * angleRotation;
 		//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f"), degRotation));
 	}
 	TArray<FVector2D> carPositions;
@@ -57,15 +60,10 @@ void ProximityModule::OnUpdate(float Delta)
 	for (AActor* carActor : carsToFind)
 	{
 		FVector playerToCarVec = carActor->GetActorLocation() - playerLoc;
-		if (GEngine && i == 0)
-		{
-			float dist = FVector::Dist(playerLoc, carActor->GetActorLocation());
-			//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f"), dist)); 
-			
-		}
 		FVector2D newVec{ 0,0 };
 		newVec.X = (std::cos(angleRotation) * playerToCarVec.Y) - (std::sin(angleRotation) * playerToCarVec.X);
 		newVec.Y = (std::sin(angleRotation) * playerToCarVec.Y) + (std::cos(angleRotation) * playerToCarVec.X);
+		// In front in world space is opposite from top in UI space
 		newVec.Y = newVec.Y * -1.f;
 		carPositions.Add(newVec);
 		i++;
@@ -74,7 +72,7 @@ void ProximityModule::OnUpdate(float Delta)
 	m_VehicleUI->UpdateHudRadar(carPositions);
 }
 
-// This function will take the calculated car positions and show the red or yellow blinspot arcs
+// This function will take the calculated car positions and show the red or yellow blindspot arcs
 // It will also update the UI with the new information
 void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
 {

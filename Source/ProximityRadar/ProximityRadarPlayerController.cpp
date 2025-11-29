@@ -103,11 +103,8 @@ void AProximityRadarPlayerController::Tick(float Delta)
 	if (IsValid(VehiclePawn) && IsValid(VehicleUI))
 	{
 		VehicleUI->UpdateSpeed(VehiclePawn->GetChaosVehicleMovement()->GetForwardSpeed());
-		//VehicleUI->UpdateGear(VehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
+		VehicleUI->UpdateGear(VehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
 		m_ProximityModule.OnUpdate(Delta);
-		TArray<AActor*> carsToFind;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACarActor::StaticClass(), carsToFind);
-		VehicleUI->UpdateGear(carsToFind.Num());
 	}
 }
 
