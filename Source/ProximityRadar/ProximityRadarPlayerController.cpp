@@ -44,6 +44,8 @@ void AProximityRadarPlayerController::BeginPlay()
 		if (VehicleUI)
 		{
 			VehicleUI->AddToViewport();
+
+			// AlexHoffman addition
 			m_ProximityModule.SetUI(VehicleUI);
 
 		} else {
@@ -104,6 +106,8 @@ void AProximityRadarPlayerController::Tick(float Delta)
 	{
 		VehicleUI->UpdateSpeed(VehiclePawn->GetChaosVehicleMovement()->GetForwardSpeed());
 		VehicleUI->UpdateGear(VehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
+
+		// AlexHoffman addition
 		m_ProximityModule.OnUpdate(Delta);
 	}
 }
@@ -114,6 +118,8 @@ void AProximityRadarPlayerController::OnPossess(APawn* InPawn)
 
 	// get a pointer to the controlled pawn
 	VehiclePawn = CastChecked<AProximityRadarPawn>(InPawn);
+
+	// AlexHoffman addition
 	m_ProximityModule.SetPlayer(VehiclePawn);
 
 	// subscribe to the pawn's OnDestroyed delegate

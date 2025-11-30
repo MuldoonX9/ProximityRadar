@@ -61,6 +61,7 @@ protected:
 	/** Pointer to the UI widget */
 	TObjectPtr<UProximityRadarUI> VehicleUI;
 
+// AlexHoffman addition
 private:
 	ProximityModule m_ProximityModule;
 		
