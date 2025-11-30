@@ -31,9 +31,9 @@ As it's one of my favorite features, I decided to re-create it in Unreal Engine 
 ### My contributions
 The following files have my contributions:
 
-[ProximityModule.cpp](Source\ProximityRadar\Private\ProximityModule.cpp)
+[ProximityModule.cpp](ProximityRadar\Source\ProximityRadar\Private\ProximityModule.cpp)
 
-[RadarTypes.h](Source\ProximityRadar\Public\RadarTypes.h)
+[RadarTypes.h](ProximityRadar\Source\ProximityRadar\Public\RadarTypes.h)
 
 I created all the UI assets by myself using Clip Studio Paint.
 
