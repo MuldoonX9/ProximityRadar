@@ -59,7 +59,9 @@ You can see a gameplay video here (to be added).
 <!-- CONTACT -->
 ## Contact
 
-Alex Hoffman アレックス・ホフマン - [LinkedIn](https://www.linkedin.com/in/alexh9/) - Alex@Hoffman.Games
+Alex Hoffman アレックス・ホフマン - [LinkedIn](https://www.linkedin.com/in/alexh9/)
+
+Resume, email, and other contact information available upon request.
 
 Project Link: [https://github.com/MuldoonX9/ProximityRadar](https://github.com/MuldoonX9/ProximityRadar)
 
