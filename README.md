@@ -40,15 +40,19 @@ I created all the UI assets by myself using Clip Studio Paint.
 
 ### Installation
 
-1. Download the windows package here [https://example.com](https://example.com)
+1. Download the windows package [here](https://drive.google.com/file/d/13n8Bs8Yz2dhaBchqZzzsRIYNT4WpMMzc/view?usp=sharing)
 2. Open the Windows folder and look for ProximityRadar.exe
 3. Run the exe
 
 ### Controls
 Tab - Change camera view to hood or third person
+
 Esc or P - Pause the game
+
 W - Throttle
+
 S - Brake
+
 A/D - Left Right steering
 	
 ### Media 
@@ -60,6 +64,8 @@ You can see a gameplay video here (to be added).
 ## Contact
 
 Alex Hoffman アレックス・ホフマン - [LinkedIn](https://www.linkedin.com/in/alexh9/)
+
+[MobyGames Credits](https://www.mobygames.com/person/478509/alex-hoffman/) - This list is missing my credits from PlanetSide Arena and Life is Strange Remaster.
 
 Resume, email, and other contact information available upon request.
 
