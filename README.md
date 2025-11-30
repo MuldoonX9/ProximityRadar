@@ -3,9 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+![A header image with Alex Hoffman's portrait, along with images from Planetside 2, Life is Strange True Colors, and Forza Motorsport][title-image]
 
 <h3 align="center">Proximity Radar</h3>
 
@@ -19,8 +17,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Proximity Radar screenshot][sample-screenshot]](https://example.com)
+![Proximity Radar screenshot][sample-screenshot]
 
 Proximity Radar is one of my proudest achievements in Forza Motorsport. You can see that version [here](https://x.com/ForzaMotorsport/status/1812895088571195739). It was a system I advocated for as a competitive fan of Forza. I saw it through from concept to completion. I was responsible for making the prototype, creating technical documentation, leading a feature team, testing, and the actual C++ implementation. 
 
@@ -79,3 +76,4 @@ Project Link: [https://github.com/MuldoonX9/ProximityRadar](https://github.com/M
 <!-- MARKDOWN LINKS & IMAGES -->
 [linkedin-url]: https://www.linkedin.com/in/alexh9/
 [sample-screenshot]: Media/SampleImage.png
+[title-image]: Media/TitleImage.png
