@@ -31,18 +31,30 @@
 ## About The Project
 ![Proximity Radar screenshot][sample-screenshot]
 
-Proximity Radar is one of my proudest achievements in Forza Motorsport. You can see that version [here](https://x.com/ForzaMotorsport/status/1812895088571195739). It was a system I advocated for as a competitive fan of Forza. I saw it through from concept to completion. I was responsible for making the prototype, creating technical documentation, leading a feature team, testing, and the actual C++ implementation. 
+Proximity Radar is a UI element, driven by C++ data, that shows the player all the cars nearby. The goal is to give the player awareness of nearby cars with precision, so as to facilitate cleaner racing. Especially for players with steering wheel setups, racing in a first person view is a must. However, most players only have a single screen, so this limits their awareness that a third person view would provide. Without this extra awareness, racers run the risk of crashing into other cars. So it was necessary to create awareness of the cars around the player, and Proximity Radar was the solution. Simply put, Proximity Radar is a top down minimap for the player.
 
-As it's one of my favorite features, I decided to re-create it in Unreal Engine 5. I wanted to have it as a small portfolio piece. 
+Proximity Radar is one of my proudest achievements in Forza Motorsport. You can see that version [here](https://x.com/ForzaMotorsport/status/1812895088571195739). It was a system I advocated for as a competivie Forza player. During my time at Turn 10 and Microsoft, I saw it through from concept to completion. I was responsible for making the prototype, creating technical documentation, leading a feature team, testing, and the actual C++ implementation. It released to praise from players as a welcome addition. I take a lot of pride in that reception, as it was a highly requested feature, and it delivered on what the players wanted.
+
+As it's one of my favorite features, I decided to re-create it in Unreal Engine 5. I wanted to have it as a small portfolio piece.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## My Contributions
-The following files have my contributions:
+I started with the default Vehicle project in Unreal Engine ver 5.6.1. The following files have my contributions:
 
-[ProximityModule.cpp](Source/ProximityRadar/Private/ProximityModule.cpp) - This is the main brains of the radar.
+[ProximityModule.cpp](Source/ProximityRadar/Private/ProximityModule.cpp) - This is the main brains of the radar. It grabs all the cars, sorts them by distance, and rotates their locations about the players forward vector. This gives a top down, 2D view of the cars around the player, almost like a minimap. The file is commented, so further detail can be found within.
 
-[RadarTypes.h](Source/ProximityRadar/Public/RadarTypes.h) - In a real game, I would put these in a spot that would be easier for a desinger to change. Since this is Unreal, I would put them in a blueprint so a designer could easily access and modify them. But I wanted them to be visible easily here on github.
+[ProximityModule.h](Source/ProximityRadar/Public/ProximityModule.h) - The header for the above file.
+
+[RadarTypes.h](Source/ProximityRadar/Public/RadarTypes.h) - The location for distance to process cars for the radar, and the distances to draw the red and yellow blindspot arcs. In a real game, I would put these in a spot that would be easier for a desinger to change, as changing these would require a code recompile. As this is Unreal, I would put them in a blueprint so a designer could easily access and modify them. But I wanted them to be visible easily here on github.
+
+[ProximityRadarUI.cpp](Source/ProximityRadar/ProximityRadarUI.cpp) - Mainly an unreal contribution, but my changes have been marked with `// AlexHoffman addition`. I pass along the processed car locations to the UI blueprint for moving and displaying.
+
+[ProximityRadarUI.h](Source/ProximityRadar/ProximityRadarUI.h) - The header for the above file.
+
+[ProximityRadarPlayerController.cpp](Source/ProximityRadar/ProximityRadarPlayerController.cpp) - Mainly an Unreal contribution, but my changes have been marked with `// AlexHoffman addition`. I created the proximity module on the player, as the player is what will manage and process the cars surrounding it. It's where Unreal dedcided the UI should be created, so I followed their lead for simplicity.
+
+[ProximityRadarPlayerController.h](Source/ProximityRadar/ProximityRadarPlayerController.h) - The header for the above file.
 
 I created all the UI assets by myself using Clip Studio Paint.
 
@@ -51,6 +63,8 @@ I also have a list of not so visible changes from the UE5 vehicle project:
 * Changed track and terrain to be more interesting than the default circle
 * Splines for custom CarActor to follow, along with offsets so multiple cars can follow same path
 * Radar UI is largely handled in the blueprint
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Installation
 
