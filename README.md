@@ -22,7 +22,7 @@
 
 [![Proximity Radar screenshot][sample-screenshot]](https://example.com)
 
-Proximity Radar is one of my proudest achievements in Forza Motorsport. You can see that version [here[(https://x.com/ForzaMotorsport/status/1812895088571195739). It was a system I advocated for and brought it to fruition. I saw it through from concept to completion. I was responsible for making the prototype, creating technical documentation, leading a feature team, testing, and the actual C++ implementation. 
+Proximity Radar is one of my proudest achievements in Forza Motorsport. You can see that version [here](https://x.com/ForzaMotorsport/status/1812895088571195739). It was a system I advocated for as a competitive fan of Forza. I saw it through from concept to completion. I was responsible for making the prototype, creating technical documentation, leading a feature team, testing, and the actual C++ implementation. 
 
 As it's one of my favorite features, I decided to re-create it in Unreal Engine 5. I wanted to have it as a small portfolio piece. 
 
@@ -31,7 +31,11 @@ As it's one of my favorite features, I decided to re-create it in Unreal Engine 
 ### My contributions
 The following files have my contributions:
 
-I created all the UI assets by myself, using Clip Studio Paint.
+[ProximityModule.cpp](Source\ProximityRadar\Private\ProximityModule.cpp)
+
+[RadarTypes.h](Source\ProximityRadar\Public\RadarTypes.h)
+
+I created all the UI assets by myself using Clip Studio Paint.
 
 ### Installation
 
@@ -40,14 +44,14 @@ I created all the UI assets by myself, using Clip Studio Paint.
 3. Run the exe
 
 ### Controls
-	Tab - Change camera view to hood or third person
-	Esc or P - Pause the game
-	W - Throttle
-	S - Brake
-	A/D - Left Right steering
+Tab - Change camera view to hood or third person
+Esc or P - Pause the game
+W - Throttle
+S - Brake
+A/D - Left Right steering
 	
 ### Media 
-	You can see a gameplay video here (to be added).
+You can see a gameplay video here (to be added).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
