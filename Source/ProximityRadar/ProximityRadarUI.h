@@ -32,7 +32,7 @@ public:
 	void UpdateGear(int32 NewGear);
 
 	/** Called to update the proximity Radar */
-	void UpdateHudRadar(const TArray<FVector2D>& carPositions);
+	void UpdateHudRadar(const TArray<RadarPipInfo>& carPositions);
 
 	void UpdateRadarBlindspots(EBlindspotLevel typ, bool left);
 
@@ -50,10 +50,7 @@ protected:
 	void OnPipUpdate(int pipId, FVector2D carLocation2D);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
-	void OnPipLocationUpdate(const TArray<FVector2D>& carPositions);
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
-	void SetPipVisible(int pipId, bool visible);
+	void SetPipVisibility(int pipId, float pipVisibility);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Vehicle")
 	void SetBlindspotArc(EBlindspotLevel blindspotType, bool left);

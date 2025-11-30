@@ -58,61 +58,76 @@ void ProximityModule::OnUpdate(float Delta)
 		//float degRotation = (180.0f / M_PI) * angleRotation;
 		//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::White, FString::Printf(TEXT("%f"), degRotation));
 	}
-	TArray<FVector2D> carPositions;
+
+	TArray<RadarPipInfo> carPositions;
 	for (AActor* carActor : carsToFind)
 	{
 		// Stop processing if all the cars are too far away
-		if (FVector::DistSquared(playerLoc, carActor->GetActorLocation()) > RadarConstants::MaxDistanceSquare)
+		double distSq = FVector::DistSquared(playerLoc, carActor->GetActorLocation());
+		if (distSq > RadarConstants::MaxDistanceSquare)
 		{
 			break;
 		}
-
+		RadarPipInfo newPipInfo;
 		// Get a vector from the player to the opponent car
 		FVector playerToCarVec = carActor->GetActorLocation() - playerLoc;
-		FVector2D newVec{ 0,0 };
 		// Using the rotation from above, rotate the vector about the angle
 		// This will convert the opponent cars from world space to the player's local space
-		newVec.X = (std::cos(angleRotation) * playerToCarVec.Y) - (std::sin(angleRotation) * playerToCarVec.X);
-		newVec.Y = (std::sin(angleRotation) * playerToCarVec.Y) + (std::cos(angleRotation) * playerToCarVec.X);
+		newPipInfo.m_CarLocation.X = (std::cos(angleRotation) * playerToCarVec.Y) - (std::sin(angleRotation) * playerToCarVec.X);
+		newPipInfo.m_CarLocation.Y = (std::sin(angleRotation) * playerToCarVec.Y) + (std::cos(angleRotation) * playerToCarVec.X);
 		// In front in world space is opposite from top in UI space
-		newVec.Y = newVec.Y * -1.f;
-		carPositions.Add(newVec);
+		newPipInfo.m_CarLocation.Y *= -1.f;
+
+		// This has a gentle fade in for cars near the maximum distance
+		// It's much more visually appealing than an icon popping into existence
+		if (distSq > RadarConstants::FadeInDistanceSquare)
+		{
+			// a lerp from Max Distance to Fade in Distance
+			float alpha = (RadarConstants::MaxDistanceSquare - distSq)
+				/ (RadarConstants::MaxDistanceSquare - RadarConstants::FadeInDistanceSquare);
+			newPipInfo.m_Opacity = alpha;
+		}
+		else
+		{
+			newPipInfo.m_Opacity = 1.0f;
+		}
+		carPositions.Add(std::move(newPipInfo));
 	}
 
 	// Check to see if any of the cars should trigger the yellow or red blindspot icons.
 	CheckBlindspots(carPositions);
 	// Finally, pass along the 2D locations of the relevant opponent cars to the UI
-	m_VehicleUI->UpdateHudRadar(carPositions);
+	m_VehicleUI->UpdateHudRadar(std::move(carPositions));
 }
 
 // This function will take the calculated car positions and show the red or yellow blindspot arcs
 // It will also update the UI with the new information
-void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
+void ProximityModule::CheckBlindspots(const TArray<RadarPipInfo>& radarInfo)
 {
 	// Favor All clear in the default case
 	m_Right = EBlindspotLevel::AllClear;
 	m_Left = EBlindspotLevel::AllClear;
 
 	EBlindspotLevel newLevel = EBlindspotLevel::AllClear;
-	for (FVector2D carPosition : carPositions)
+	for (RadarPipInfo carInfo : radarInfo)
 	{
 		// Check for the closest case fist
-		if (abs(carPosition.X) < RadarConstants::VeryCloseXDistance
-			&& abs(carPosition.Y) < RadarConstants::VeryCloseYDistance)
+		if (abs(carInfo.m_CarLocation.X) < RadarConstants::VeryCloseXDistance
+			&& abs(carInfo.m_CarLocation.Y) < RadarConstants::VeryCloseYDistance)
 		{
 			newLevel = EBlindspotLevel::VeryClose;
 		}
-		else if (abs(carPosition.X) < RadarConstants::CloseXDistance
-			&& abs(carPosition.Y) < RadarConstants::CloseYDistance)
+		else if (abs(carInfo.m_CarLocation.X) < RadarConstants::CloseXDistance
+			&& abs(carInfo.m_CarLocation.Y) < RadarConstants::CloseYDistance)
 		{
 			newLevel = EBlindspotLevel::Close;
 		}
 		// This has blindspots show up for cars further to the rear than 
 		// they would be if they were in front of the driver.
 		// Since they wouldn't be as visible to the driver.
-		else if (abs(carPosition.X) < RadarConstants::CloseXDistance
-			&& carPosition.Y > RadarConstants::CloseYDistance
-			&& carPosition.Y < RadarConstants::CloseYDistanceBelow)
+		else if (abs(carInfo.m_CarLocation.X) < RadarConstants::CloseXDistance
+			&& carInfo.m_CarLocation.Y > RadarConstants::CloseYDistance
+			&& carInfo.m_CarLocation.Y < RadarConstants::CloseYDistanceBelow)
 		{
 			newLevel = EBlindspotLevel::Close;
 		}
@@ -122,11 +137,11 @@ void ProximityModule::CheckBlindspots(const TArray<FVector2D>& carPositions)
 		}
 
 		// Favor the highest level of blindspot (very close)
-		if (carPosition.X > 0 && newLevel > m_Right)
+		if (carInfo.m_CarLocation.X > 0 && newLevel > m_Right)
 		{
 			m_Right = newLevel;
 		}
-		else if (carPosition.X < 0 && newLevel > m_Left)
+		else if (carInfo.m_CarLocation.X < 0 && newLevel > m_Left)
 		{
 			m_Left = newLevel;
 		}

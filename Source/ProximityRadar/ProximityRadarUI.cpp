@@ -19,7 +19,7 @@ void UProximityRadarUI::UpdateGear(int32 NewGear)
 }
 
 // AlexHoffman addition
-void UProximityRadarUI::UpdateHudRadar(const TArray<FVector2D>& carPositions)
+void UProximityRadarUI::UpdateHudRadar(const TArray<RadarPipInfo>& carPositions)
 {
 	// Loop over the number of icons we have
 	// If we have more icons than cars, make the remaining icons invisible
@@ -28,14 +28,13 @@ void UProximityRadarUI::UpdateHudRadar(const TArray<FVector2D>& carPositions)
 	{
 		if (i >= carPositions.Num())
 		{
-			SetPipVisible(i, false);
+			SetPipVisibility(i, false);
 			continue;
 		}
 		else 
 		{
-			FVector2D newSize{ carPositions[i].X, carPositions[i].Y };
-			SetPipVisible(i, true);
-			OnPipUpdate(i, carPositions[i]);
+			SetPipVisibility(i, carPositions[i].m_Opacity);
+			OnPipUpdate(i, carPositions[i].m_CarLocation);
 		}
 	}
 }

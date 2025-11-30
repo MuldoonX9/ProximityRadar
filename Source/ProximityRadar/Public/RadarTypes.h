@@ -16,6 +16,12 @@ enum class EBlindspotLevel : uint8
 	VeryClose,
 };
 
+struct RadarPipInfo
+{
+	FVector2D m_CarLocation{ 0,0 };
+	float m_Opacity{ 1.f };
+};
+
 namespace RadarConstants 
 {
 	// For performance reasons, let's only draw 3 icons
@@ -23,7 +29,8 @@ namespace RadarConstants
 
 	// The max distance from the player to process cars for the radar
 	constexpr int MaxDistanceSquare = 900 * 900;
-
+	//Start the cars faded out then fade them in
+	constexpr int FadeInDistanceSquare = 800 * 800;
 	
 	// The distance from the player to draw a red blindspot
 	const int VeryCloseXDistance = 400;

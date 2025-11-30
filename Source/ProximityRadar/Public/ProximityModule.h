@@ -24,7 +24,7 @@ public:
 	void OnUpdate(float Delta);
 
 private:
-	void CheckBlindspots(const TArray<FVector2D>& carPositions);
+	void CheckBlindspots(const TArray<RadarPipInfo>& radarInfo);
 
 	/** Pointer to the controlled vehicle pawn */
 	TObjectPtr<AProximityRadarPawn> m_VehiclePawn;
