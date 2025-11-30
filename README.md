@@ -2,15 +2,9 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<div align="center">
 ![A header image with Alex Hoffman's portrait, along with images from Planetside 2, Life is Strange True Colors, and Forza Motorsport][title-image]
-
+<div align="center">
 <h3 align="center">Proximity Radar</h3>
-
-  <p align="center">
-    project_description
-    <br />
-  </p>
 </div>
 
 
