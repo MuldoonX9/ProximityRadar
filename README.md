@@ -84,6 +84,8 @@ S - Brake
 A/D - Left Right steering
 	
 ## Media 
+![Proximity Radar gif][sample-gif]
+
 You can see a gameplay video here (to be added).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -105,4 +107,5 @@ My resume, email, and other contact information available upon request.
 <!-- MARKDOWN LINKS & IMAGES -->
 [linkedin-url]: https://www.linkedin.com/in/alexh9/
 [sample-screenshot]: Media/SampleImage.png
+[sample-gif]: Media/ProximityRadarGif.gif
 [title-image]: Media/TitleImage.png
