@@ -107,5 +107,5 @@ My resume, email, and other contact information available upon request.
 <!-- MARKDOWN LINKS & IMAGES -->
 [linkedin-url]: https://www.linkedin.com/in/alexh9/
 [sample-screenshot]: Media/SampleImage.png
-[sample-gif]: Media/SampleGif.gif
+[sample-gif]: Media/ProximityRadarGif.gif
 [title-image]: Media/TitleImage.png
