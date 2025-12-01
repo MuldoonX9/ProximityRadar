@@ -86,7 +86,7 @@ A/D - Left Right steering
 ## Media 
 ![Proximity Radar gif][sample-gif]
 
-You can see a gameplay video here (to be added).
+You can see a gameplay video here:
 [![Youtube Video][yt-thumb]](https://youtu.be/DPtOh4iYAig)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
