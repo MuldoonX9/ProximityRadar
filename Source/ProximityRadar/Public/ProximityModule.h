@@ -32,6 +32,9 @@ private:
 	/** Pointer to the UI widget */
 	TObjectPtr<UProximityRadarUI> m_VehicleUI;
 
+	TArray<AActor*> m_OpponentCars;
+
+	// Variables to help UI optimization
 	EBlindspotLevel m_Left = EBlindspotLevel::AllClear;
 	EBlindspotLevel m_Right = EBlindspotLevel::AllClear;
 	EBlindspotLevel m_PreviousLeft = EBlindspotLevel::VeryClose;

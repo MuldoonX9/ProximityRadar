@@ -37,12 +37,17 @@ void ProximityModule::OnUpdate(float Delta)
 	}
 
 	// First, get all the opponent cars
-	TArray<AActor*> carsToFind;	
-	UGameplayStatics::GetAllActorsOfClass(m_VehiclePawn->GetWorld(), ACarActor::StaticClass(), carsToFind);
+	if(m_OpponentCars.Num() == 0)
+	{
+		// For this demo, we don't expect the car list to change
+		// If this were a multiplayer race, we'd need to change the list when cars connect or disconnect
+		UGameplayStatics::GetAllActorsOfClass(m_VehiclePawn->GetWorld(), ACarActor::StaticClass(), m_OpponentCars);
+	}
+	
 
 	// Sort the cars by distance to the player, so closest cars are first
 	FVector playerLoc = m_VehiclePawn->GetActorLocation();
-	Algo::Sort(carsToFind, [playerLoc](const AActor* LHS, const AActor* RHS)
+	Algo::Sort(m_OpponentCars, [playerLoc](const AActor* LHS, const AActor* RHS)
 		{
 			return FVector::DistSquared(playerLoc, LHS->GetActorLocation()) < FVector::DistSquared(playerLoc, RHS->GetActorLocation());
 		});
@@ -60,7 +65,7 @@ void ProximityModule::OnUpdate(float Delta)
 	}
 
 	TArray<RadarPipInfo> carPositions;
-	for (AActor* carActor : carsToFind)
+	for (AActor* carActor : m_OpponentCars)
 	{
 		// Stop processing if all the cars are too far away
 		double distSq = FVector::DistSquared(playerLoc, carActor->GetActorLocation());
